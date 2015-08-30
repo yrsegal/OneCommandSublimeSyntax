@@ -40,7 +40,7 @@
   	{
   		"begin": "\"",
   		"end": "\"",
-  		"match": "\"[^\\n]*\"",
+  		"match": "\"[^\\n\"]*\"",
   		"name": "string.quoted.double"
   	}
   ],

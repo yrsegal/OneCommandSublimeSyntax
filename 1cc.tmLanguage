@@ -64,7 +64,7 @@
 			<key>end</key>
 			<string>"</string>
 			<key>match</key>
-			<string>"[^\n]*"</string>
+			<string>"[^\n"]*"</string>
 			<key>name</key>
 			<string>string.quoted.double</string>
 		</dict>
