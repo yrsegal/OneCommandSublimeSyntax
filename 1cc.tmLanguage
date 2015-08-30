@@ -71,6 +71,12 @@
 			<string>variable.parameter</string>
 		</dict>
 		<dict>
+			<key>match</key>
+			<string>\d+,\d+,\d+,?</string>
+			<key>name</key>
+			<string>variable.parameter</string>
+		</dict>
+		<dict>
 			<key>begin</key>
 			<string>"[^\n"]*</string>
 			<key>end</key>
