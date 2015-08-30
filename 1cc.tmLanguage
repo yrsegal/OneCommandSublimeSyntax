@@ -42,7 +42,19 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>-?[\d~]</string>
+			<string>~</string>
+			<key>name</key>
+			<string>constant.numeric</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>-?(?&lt;!\.)[\d][bsl]?(?!\.)</string>
+			<key>name</key>
+			<string>constant.numeric</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\d+\.\d+f?</string>
 			<key>name</key>
 			<string>constant.numeric</string>
 		</dict>

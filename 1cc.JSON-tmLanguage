@@ -25,10 +25,18 @@
 			"match": "(?i)^\\s*DEFINE:\\s*\\w+\\b",
   		"name": "storage.type"
 		},
+    {
+      "match": "~",
+      "name": "constant.numeric"
+    },
 		{
-			"match": "-?[\\d~]",
+			"match": "-?(?<!\\.)[\\d][bsl]?(?!\\.)",
   		"name": "constant.numeric"
 		},
+    {
+      "match": "\\d+\\.\\d+f?",
+      "name": "constant.numeric"
+    },
   	{
   		"match": "@[prae]",
   		"name": "storage.type"
