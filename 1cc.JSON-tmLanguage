@@ -45,6 +45,10 @@
   		"match": "[\\w_]+=[!\\w_]+",
   		"name": "variable.parameter"
   	},
+    {
+      "match": "\\d+,\\d+,\\d+,?",
+      "name": "variable.parameter"
+    },
   	{
   		"begin": "\"[^\\n\"]*",
   		"end": "\"",
