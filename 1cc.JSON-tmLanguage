@@ -53,7 +53,11 @@
   		"begin": "\"[^\\n\"]*",
   		"end": "\"",
   		"name": "string.quoted.double"
-  	}
+  	},
+    {
+      "match": "§[\\da-fA-Fk-oK-OrR]?",
+      "name": "invalid.illegal"
+    }
   ],
   "uuid": "cabd43d7-cf20-4530-8822-b50016a67fe8"
 }

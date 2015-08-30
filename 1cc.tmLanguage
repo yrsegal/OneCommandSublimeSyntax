@@ -84,6 +84,12 @@
 			<key>name</key>
 			<string>string.quoted.double</string>
 		</dict>
+		<dict>
+			<key>match</key>
+			<string>§[\da-fA-Fk-oK-OrR]?</string>
+			<key>name</key>
+			<string>invalid.illegal</string>
+		</dict>
 	</array>
 	<key>scopeName</key>
 	<string>source.one_command</string>
