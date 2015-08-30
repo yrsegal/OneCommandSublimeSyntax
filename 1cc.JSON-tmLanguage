@@ -1,0 +1,48 @@
+// [PackageDev] target_format: plist, ext: tmLanguage
+{
+  "name": "One Command",
+  "scopeName": "source.one_command",
+  "fileTypes": ["1cc"],
+
+  "patterns": [
+		{
+			"match": "^\\s*#.*$",
+			"name": "comment.line.number-sign"
+		},
+		{
+			"match": "\\$\\w+\\b",
+  		"name": "storage.type"
+		},
+		{
+			"match": "\\s*COND:",
+  		"name": "entity.name.tag"
+		},
+		{
+			"match": "\\s*INIT:",
+  		"name": "entity.name.function"
+		},
+		{
+			"match": "^\\s*DEFINE:",
+  		"name": "storage.type"
+		},
+		{
+			"match": "-?[\\d~]",
+  		"name": "constant.numeric"
+		},
+  	{
+  		"match": "@[prae]",
+  		"name": "storage.type"
+  	},
+  	{
+  		"match": "[\\w_]+=[!\\w_]+",
+  		"name": "variable.parameter"
+  	},
+  	{
+  		"begin": "\"",
+  		"end": "\"",
+  		"match": "\"[^\\n]*\"",
+  		"name": "string.quoted.double"
+  	}
+  ],
+  "uuid": "cabd43d7-cf20-4530-8822-b50016a67fe8"
+}

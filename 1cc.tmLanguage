@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>1cc</string>
+	</array>
+	<key>name</key>
+	<string>One Command</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>match</key>
+			<string>^\s*#.*$</string>
+			<key>name</key>
+			<string>comment.line.number-sign</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\$\w+\b</string>
+			<key>name</key>
+			<string>storage.type</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\s*COND:</string>
+			<key>name</key>
+			<string>entity.name.tag</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\s*INIT:</string>
+			<key>name</key>
+			<string>entity.name.function</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>^\s*DEFINE:</string>
+			<key>name</key>
+			<string>storage.type</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>-?[\d~]</string>
+			<key>name</key>
+			<string>constant.numeric</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>@[prae]</string>
+			<key>name</key>
+			<string>storage.type</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>[\w_]+=[!\w_]+</string>
+			<key>name</key>
+			<string>variable.parameter</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>"</string>
+			<key>end</key>
+			<string>"</string>
+			<key>match</key>
+			<string>"[^\n]*"</string>
+			<key>name</key>
+			<string>string.quoted.double</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>source.one_command</string>
+	<key>uuid</key>
+	<string>cabd43d7-cf20-4530-8822-b50016a67fe8</string>
+</dict>
+</plist>
