@@ -50,8 +50,7 @@
       "name": "variable.parameter"
     },
   	{
-  		"begin": "\"[^\\n\"]*",
-  		"end": "\"",
+  		"match": "\"([^\"\\\\]*(\\\\.)*)*\"",
   		"name": "string.quoted.double"
   	},
     {
