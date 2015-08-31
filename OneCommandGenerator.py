@@ -20,6 +20,7 @@ class Minecraft1ccBase(sublime_plugin.TextCommand):
 			new_view = self.view.window().new_file()
 			new_view.set_syntax_file("Packages/OneCommandSublimeSyntax/1cc.tmLanguage")
 			new_view.insert(edit, 0, final_command)
+			new_view.sel().add(sublime.Region(0, new_view.size()))
 
 
 
