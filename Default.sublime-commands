@@ -6,5 +6,9 @@
     {
     	"caption": "Minecraft Commands: Generate One-Command Contraption (manual mode)",
     	"command": "minecraft_onecc_manual"
+    },
+    {
+    	"caption": "Minecraft Commands: Sort selectors",
+    	"command": "minecraft_sort_selector"
     }
 ]
