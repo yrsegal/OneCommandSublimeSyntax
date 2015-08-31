@@ -56,6 +56,14 @@
     {
       "match": "§[\\da-fA-Fk-oK-OrR]?",
       "name": "invalid.illegal"
+    },
+    {
+      "match": "false|true",
+      "name": "constant.language"
+    },
+    {
+      "match": "minecraft:",
+      "name": "entity.name.tag"
     }
   ],
   "uuid": "cabd43d7-cf20-4530-8822-b50016a67fe8"

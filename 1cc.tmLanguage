@@ -88,6 +88,18 @@
 			<key>name</key>
 			<string>invalid.illegal</string>
 		</dict>
+		<dict>
+			<key>match</key>
+			<string>false|true</string>
+			<key>name</key>
+			<string>constant.language</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>minecraft:</string>
+			<key>name</key>
+			<string>entity.name.tag</string>
+		</dict>
 	</array>
 	<key>scopeName</key>
 	<string>source.one_command</string>
