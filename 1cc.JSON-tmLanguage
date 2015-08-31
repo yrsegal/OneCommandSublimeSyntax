@@ -26,6 +26,10 @@
   		"name": "storage.type"
 		},
     {
+      "match": "(?i)REPEAT:",
+      "name": "constant.language"
+    },
+    {
       "match": "~",
       "name": "constant.numeric"
     },

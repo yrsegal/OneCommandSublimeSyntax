@@ -42,6 +42,12 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>(?i)REPEAT:</string>
+			<key>name</key>
+			<string>constant.language</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>~</string>
 			<key>name</key>
 			<string>constant.numeric</string>
