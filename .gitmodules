@@ -1,0 +1,3 @@
+[submodule "OneCommand"]
+	path = OneCommand
+	url = git://github.com/destruc7i0n/OneCommand.git

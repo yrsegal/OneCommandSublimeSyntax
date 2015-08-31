@@ -1,0 +1,10 @@
+[
+    {
+    	"caption": "Minecraft Commands: Generate One-Command Contraption (instant mode)",
+    	"command": "minecraft_onecc_instant"
+    },
+    {
+    	"caption": "Minecraft Commands: Generate One-Command Contraption (manual mode)",
+    	"command": "minecraft_onecc_manual"
+    }
+]
