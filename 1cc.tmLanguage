@@ -24,13 +24,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)\s*COND:</string>
+			<string>(?i)COND:</string>
 			<key>name</key>
 			<string>entity.name.tag</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)\s*INIT:</string>
+			<string>(?i)INIT:</string>
 			<key>name</key>
 			<string>entity.name.function</string>
 		</dict>

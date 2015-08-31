@@ -14,11 +14,11 @@
   		"name": "storage.type"
 		},
 		{
-			"match": "(?i)\\s*COND:",
+			"match": "(?i)COND:",
   		"name": "entity.name.tag"
 		},
 		{
-			"match": "(?i)\\s*INIT:",
+			"match": "(?i)INIT:",
   		"name": "entity.name.function"
 		},
 		{
