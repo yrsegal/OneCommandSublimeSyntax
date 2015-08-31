@@ -37,14 +37,22 @@
       "match": "\\d+\\.\\d+f?",
       "name": "constant.numeric"
     },
+    {
+      "match": "!",
+      "name": "entity.name.tag"
+    },
   	{
   		"match": "@[prae]",
   		"name": "storage.type"
   	},
   	{
-  		"match": "[\\w_]+=[!\\w_]+",
+  		"match": "[\\w_]+(?==[!\\w_])",
   		"name": "variable.parameter"
   	},
+    {
+      "match": "(?<==|=!)[\\w_]+",
+      "name": "storage.type"
+    },
     {
       "match": "\\d+,\\d+,\\d+,?",
       "name": "variable.parameter"

@@ -60,15 +60,27 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>!</string>
+			<key>name</key>
+			<string>entity.name.tag</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>@[prae]</string>
 			<key>name</key>
 			<string>storage.type</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>[\w_]+=[!\w_]+</string>
+			<string>[\w_]+(?==[!\w_])</string>
 			<key>name</key>
 			<string>variable.parameter</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>(?&lt;==|=!)[\w_]+</string>
+			<key>name</key>
+			<string>storage.type</string>
 		</dict>
 		<dict>
 			<key>match</key>
