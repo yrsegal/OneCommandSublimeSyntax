@@ -2,7 +2,7 @@
 A sublime syntax for [the One Command generator](https://github.com/destruc7i0n/OneCommand) by myself and [destruc7i0n](https://github.com/destruc7i0n).
 
 ## What it adds
----
+
 ### Commands
 #### `minecraft_onecc_instant`
 Generates a self-activating one-command contraption from the current file.
@@ -13,9 +13,11 @@ Generates a manually-activated one-command contraption from the current file.
 #### `minecraft_sort_selectors`
 Sorts any entity/player selector tags within the selection by alphabetical order.
 
+---
+
 ### Language
 A syntax highlighter for the special syntax accepted by the generator.
----
+
 ## The Syntax
 Most of the differences between 1CC syntax and regular commands lie in the prepends.  
 
