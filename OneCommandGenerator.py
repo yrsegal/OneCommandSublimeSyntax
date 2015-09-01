@@ -17,10 +17,19 @@ class Minecraft1ccBase(sublime_plugin.TextCommand):
 		if len(final_command) > 32500:
 			sublime.error_message("Resultant command too large ({} > 32500)".format(len(final_command)))
 		else:
-			new_view = self.view.window().new_file()
-			new_view.set_syntax_file("Packages/OneCommandSublimeSyntax/1cc.tmLanguage")
-			new_view.insert(edit, 0, final_command)
-			new_view.sel().add(sublime.Region(0, new_view.size()))
+			views = self.view.window().views()
+			check = filter(lambda x: x.name() == "Generated Command", views)
+			if len(check):
+				view = list(check)[0]
+				view.erase(edit, sublime.Region(0, view.size()))
+				self.view.window().focus_view(view)
+			else:
+				view = self.view.window().new_file()
+				view.set_scratch(True)
+				view.set_name("Generated Command")
+				view.set_syntax_file("Packages/OneCommandSublimeSyntax/1cc.tmLanguage")
+			view.insert(edit, 0, final_command)
+			view.sel().add(sublime.Region(0, view.size()))
 
 
 
