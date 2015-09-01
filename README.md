@@ -25,5 +25,5 @@ Most of the differences between 1CC syntax and regular commands lie in the prepe
 * `COND:` as a prepend will make the command only run if the previous one was successful. Not recommended to use on the first command, nor the first `INIT:` command.
 * `REPEAT:` as a prepend will make the command in a repeating command block. This is included to allow for different-speed clocks, and similar functions.
 
-There's also the `DEFINE:` syntax, similar to the C `#define` directive. This allows simpler-to-read blocks of code to be written.
+There's also the `DEFINE:` syntax, similar to the C `#define` directive. This allows simpler-to-read blocks of code to be written.  
 The syntax is `DEFINE: identifier replacewith`. You can then use this by calling out, anywhere in your code, `$identifier`.
