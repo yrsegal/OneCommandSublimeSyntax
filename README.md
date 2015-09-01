@@ -1,6 +1,8 @@
 # OneCommandSublimeSyntax
 A sublime syntax for [the One Command generator](https://github.com/destruc7i0n/OneCommand) by myself and [destruc7i0n](https://github.com/destruc7i0n).
 
+[PackageControl page](https://packagecontrol.io/packages/One%20Command%20Syntax%20Highlighter)
+
 ## What it adds
 
 ### Commands
