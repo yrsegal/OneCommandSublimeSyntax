@@ -3,6 +3,8 @@ import os, sys
 sys.path.append(os.path.join(os.getcwd(), "OneCommand"))
 import oneCommand
 
+filepath = os.getcwd()
+
 class Minecraft1ccBase(sublime_plugin.TextCommand):
 
 	mode = ""
@@ -27,7 +29,7 @@ class Minecraft1ccBase(sublime_plugin.TextCommand):
 				view = self.view.window().new_file()
 				view.set_scratch(True)
 				view.set_name("Generated Command")
-				view.set_syntax_file("Packages/OneCommandSublimeSyntax/1cc.tmLanguage")
+				view.set_syntax_file(os.path.join(filepath, "1cc.tmLanguage"))
 			view.insert(edit, 0, final_command)
 			view.sel().add(sublime.Region(0, view.size()))
 
