@@ -1,6 +1,6 @@
 import sublime, sublime_plugin, re
 
-selector_regex = re.compile(r"@[prae]\[[\w!_=,]*\]")
+selector_regex = re.compile(r"@[prae]\[[^\[\]]*\]")
 
 class MinecraftSortSelectorCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
