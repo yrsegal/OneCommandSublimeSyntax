@@ -18,6 +18,12 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>^\s*-</string>
+			<key>name</key>
+			<string>comment.line</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>\$\w+\b</string>
 			<key>name</key>
 			<string>storage.type</string>

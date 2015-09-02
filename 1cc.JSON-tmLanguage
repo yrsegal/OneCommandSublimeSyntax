@@ -9,6 +9,10 @@
 			"match": "^\\s*#.*$",
 			"name": "comment.line.number-sign"
 		},
+    {
+      "match": "^\\s*-",
+      "name": "comment.line"
+    },
 		{
 			"match": "\\$\\w+\\b",
   		"name": "storage.type"
