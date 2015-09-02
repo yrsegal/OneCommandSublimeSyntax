@@ -79,11 +79,11 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 					i -= 1
 					line += command[c]
 			elif command[c] == '\"':
+				toappend = "\""
+				if command[c-1] == " " and not inquote:
+					toappend = " " + toappend
 				if command[c-1] != "\\":
 					inquote ^= 1
-				toappend = "\""
-				if command[c-1] == " ":
-					toappend = " " + toappend
 				line += toappend
 			elif command[c] == ",":
 				if inquote:
@@ -91,7 +91,10 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 				else:
 					coms.append(self.indent(i)+line+",\n")
 					line = ""
-			elif command[c] != " ":
+			elif command[c] == " ":
+				if c:
+					line += " "
+			else:
 				line += command[c]
 		else:
 			if line:
