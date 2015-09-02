@@ -11,9 +11,11 @@ https://twitter.com/TexelElf
 """
 
 import sublime, sublime_plugin, re
-dash_regex = re.compile(r"^[ \t]*-")
-end_regex =  re.compile(r"\n$")
-tab_regex =  re.compile(r"- \t+")
+dash_regex =  re.compile(r"^[ \t]*-")
+end_regex =   re.compile(r"\n$")
+tab_regex =   re.compile(r"- \t+")
+
+ready_regex = re.compile(r"\[|\{")
 
 class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 
@@ -89,7 +91,7 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 				else:
 					coms.append(self.indent(i)+line+",\n")
 					line = ""
-			else:
+			elif command[c] != " ":
 				line += command[c]
 		else:
 			if line:
@@ -122,10 +124,15 @@ class MinecraftOneccFormatCommand(MinecraftFormatBaseCommand):
 			else:
 				selection = region
 
+			if not selection.contains(0):
+				if self.view.substr(sublime.Region(selection.begin()-1, selection.begin())) == " ":
+					selection = sublime.Region(selection.begin()-1, selection.end())
+
 			fs = self.view.substr(selection)
 
-			if "{" in fs:
-				mdatapos = fs.find("{")
+			if ready_regex.search(fs):
+				mdatapos = ready_regex.search(fs).start()
+				if mdatapos: mdatapos -= 1
 				outputlines.append(fs[:mdatapos]+"\n")
 				outputlines+=self.strexplode(fs[mdatapos:])
 			else:
