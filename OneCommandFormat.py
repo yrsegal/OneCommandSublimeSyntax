@@ -13,7 +13,7 @@ https://twitter.com/TexelElf
 import sublime, sublime_plugin, re
 dash_regex = re.compile(r"^[ \t]*-")
 end_regex =  re.compile(r"\n$")
-tab_regex =  re.compile(r"- \t")
+tab_regex =  re.compile(r"- \t+")
 
 class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 
@@ -27,8 +27,8 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 	@staticmethod
 	def dashsub(string):
 		if dash_regex.match(string):
-			return dash_regex.sub("", tab_regex.sub("-", string)).lstrip("\t")
-		return string
+			return dash_regex.sub("", tab_regex.sub("- ", string)).lstrip("\t").rstrip(" ")
+		return string.rstrip(" ")
 
 	def strexplode(self, command):
 		coms = []
