@@ -18,7 +18,8 @@ Sorts any entity/player selector tags within the selection by alphabetical order
 ---
 
 ### Language
-A syntax highlighter for the special syntax accepted by the generator.
+#### `source.one_command`
+A syntax highlighter for the special syntax accepted by the generator. Uses the file extension `.1cc`.
 
 ## The Syntax
 Most of the differences between 1CC syntax and regular commands lie in the prepends.  
