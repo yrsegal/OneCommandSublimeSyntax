@@ -10,5 +10,13 @@
     {
     	"caption": "Minecraft Commands: Sort selectors",
     	"command": "minecraft_sort_selector"
+    },
+    {
+        "caption": "Minecraft Commands: Expand commands",
+        "command": "minecraft_onecc_format"
+    },
+    {
+        "caption": "Minecraft Commands: Compress commands",
+        "command": "minecraft_onecc_unformat"
     }
 ]
