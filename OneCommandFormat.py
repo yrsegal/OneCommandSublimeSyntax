@@ -108,7 +108,7 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 				command += self.dashsub(l.rstrip("\n"))
 			else:
 				command += self.dashsub(l)
-		return end_regex.sub("", command)
+		return command
 				
 class MinecraftOneccFormatCommand(MinecraftFormatBaseCommand):
 	
@@ -137,9 +137,9 @@ class MinecraftOneccFormatCommand(MinecraftFormatBaseCommand):
 				outputlines+=self.strexplode(fs[mdatapos:])
 			else:
 				outputlines.append(str(fs)+"\n")
-			outputlines.append("\n")		
+			out = end_regex.sub("", "".join(outputlines))
 
-			self.view.replace(edit, selection, ("".join(outputlines)))
+			self.view.replace(edit, selection, out)
 
 class MinecraftOneccUnformatCommand(MinecraftFormatBaseCommand):
 
