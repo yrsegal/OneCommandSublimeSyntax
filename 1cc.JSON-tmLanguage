@@ -30,6 +30,10 @@
   		"name": "storage.type"
 		},
     {
+      "match": "(?i)BLOCK:[ \\t]*(minecraft:)?[a-z_]+(:\\d{1,2})?[ \\t]*\\n",
+      "name": "constant.language"
+    },
+    {
       "match": "(?i)REPEAT:",
       "name": "constant.language"
     },

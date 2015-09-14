@@ -48,6 +48,12 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>(?i)BLOCK:[ \t]*(minecraft:)?[a-z_]+(:\d{1,2})?[ \t]*\n</string>
+			<key>name</key>
+			<string>constant.language</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>(?i)REPEAT:</string>
 			<key>name</key>
 			<string>constant.language</string>
