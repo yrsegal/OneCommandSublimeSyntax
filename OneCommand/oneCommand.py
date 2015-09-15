@@ -90,14 +90,13 @@ def gen_stack(init_commands, clock_commands, mode, loud=False):
 	if clock_commands or init_commands:
 		command_sands = []
 
+		repeatoffsets = []
 		if mode == 'i':
-			repeatoffsets = [len(clock_commands) + 2]
+			if clock_commands and isinstance(clock_commands[0], Command): 
+				repeatoffsets.append(len(clock_commands) + 2)
 			for command in clock_commands:
-				if command.block == "repeating_command_block" and not command.cond:
+				if command.block == "repeating_command_block" and not command.cond and command is not clock_commands[0]:
 					repeatoffsets.append(len(clock_commands) - clock_commands.index(command) + 2 + len(repeatoffsets))
-					print(repeatoffsets[-1])
-		else:
-			repeatoffsets = []
 
 		filloffset = len(init_commands) + len(repeatoffsets)
 		if filloffset: filloffset += 1
