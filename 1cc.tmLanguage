@@ -48,9 +48,9 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)BLOCK:[ \t]*(minecraft:)?[a-z_]+(:\d{1,2})?[ \t]*\n</string>
+			<string>(?i)BLOCK:\s*[\w_:]+(:\d{1,2})?</string>
 			<key>name</key>
-			<string>constant.language</string>
+			<string>storage.type</string>
 		</dict>
 		<dict>
 			<key>match</key>
