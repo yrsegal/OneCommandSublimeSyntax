@@ -18,23 +18,39 @@
   		"name": "storage.type"
 		},
 		{
-			"match": "(?i)COND:",
+			"match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*COND:",
   		"name": "entity.name.tag"
 		},
+    {
+      "match": "(?i)^\\s*COND:",
+      "name": "entity.name.tag"
+    },
 		{
-			"match": "(?i)INIT:",
+			"match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*INIT:",
   		"name": "entity.name.function"
 		},
+    {
+      "match": "(?i)^\\s*INIT:",
+      "name": "entity.name.function"
+    },
 		{
 			"match": "(?i)^\\s*DEFINE:\\s*\\w+\\b",
   		"name": "storage.type"
 		},
     {
-      "match": "(?i)BLOCK:\\s*[\\w_:]+(:\\d{1,2})?",
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*BLOCK:\\s*[\\w_:]+(:\\d{1,2})?",
       "name": "storage.type"
     },
     {
-      "match": "(?i)REPEAT:",
+      "match": "(?i)^\\s*BLOCK:\\s*[\\w_:]+(:\\d{1,2})?",
+      "name": "storage.type"
+    },
+    {
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*REPEAT:",
+      "name": "constant.language"
+    },
+    {
+      "match": "(?i)^\\s*REPEAT:",
       "name": "constant.language"
     },
     {
