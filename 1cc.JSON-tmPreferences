@@ -1,0 +1,14 @@
+// [PackageDev] target_format: plist, ext: tmPreferences
+{
+	"name": "One Command",
+	"scope": "source.one_command",
+	"settings": {
+		"shellVariables": [
+			{
+				"name": "TM_COMMENT_START",
+				"value": "# "
+			}
+		]
+	},
+	"uuid": "52090304-60B5-11E5-97F5-A00E9E6E46F5"
+}
