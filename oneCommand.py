@@ -150,12 +150,15 @@ init_tag_regex =   re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*INIT
 cond_tag_regex =   re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*COND:", re.IGNORECASE)
 repeat_tag_regex = re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*REPEAT:", re.IGNORECASE)
 block_tag_regex =  re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*(minecraft:)?[a-z_](:\d{1,2})?", re.IGNORECASE)
-block_regex =  re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*", re.IGNORECASE)
+block_regex =      re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*", re.IGNORECASE)
 define_regex =     re.compile(r"^[ \t]*DEFINE:", re.IGNORECASE)
+undefine_regex =   re.compile(r"^[ \t]*UNDEFINE:", re.IGNORECASE)
+set_regex =        re.compile(r"^[ \t]*SET:", re.IGNORECASE)
+import_regex =     re.compile(r"^[ \t]*IMPORT:", re.IGNORECASE)
 comment_regex =    re.compile(r"^[ \t]*#", re.IGNORECASE)
 nonewline_regex =  re.compile(r"^[ \t]*-", re.IGNORECASE)
 
-def parse_commands(commands):
+def parse_commands(commands, context = os.path.curdir):
 	init_commands = []
 	clock_commands = []
 	variables = []
@@ -187,10 +190,69 @@ def parse_commands(commands):
 				contents = i.sub(contents)
 
 			if name in varnames: 
-				cprint("WARNING: Duplicate variable {var}. Using first definition.", color=bcolors.YELLOW, var=name)
+				cprint("""WARNING: Duplicate variable {var}. Using first definition.
+				          To overwrite the previous value of a variable, use the {bold}SET:{endc}{color} prepend.
+				          To undefine a variable, use the {bold}UNDEFINE:{endc}{color} prepend.""", color=bcolors.YELLOW, var=name, strip=True)
 			else:
 				varnames.append(name)
 				variables.append(CmdVariable(name, contents))
+
+		elif set_regex.match(command):
+			command_split = set_regex.sub("", command).split()
+			while not command_split[0]: command_split = command_split[1:]
+			while not command_split[1]: command_split = command_split[:1] + command_split[2:]
+			if len(command_split) < 2: continue
+			name = command_split[0]
+			contents = " ".join(command_split[1:])
+			for i in variables:
+				name = i.sub(name)
+				contents = i.sub(contents)
+
+			if name in varnames: 
+				for i in variables:
+					if i.name == name:
+						variables.remove(i)
+				varnames.remove(name)
+			varnames.append(name)
+			variables.append(CmdVariable(name, contents))
+
+		elif undefine_regex.match(command):
+			variable = undefine_regex.sub("", command).strip().split()[0]
+			if variable in varnames:
+				for i in variables:
+					if i.name == name:
+						variables.remove(i)
+				varnames.remove(name)
+
+		elif import_regex.match(command):
+			if context is None:
+				continue
+			libraryname = import_regex.sub("", command).strip()
+			if isinstance(context, str):
+				if os.path.exists(os.path.join(context, libraryname)):
+					lib = open(os.path.join(context,libraryname))
+				elif os.path.exists(os.path.join(context, libraryname+".1cc")):
+					lib = open(os.path.join(context, libraryname+".1cc"))
+				else:
+					cprint("Failed to import {lib}. File not found.", color=bcolors.RED, lib=libraryname)
+					continue
+			else:
+				lib = None
+				for i in context:
+					if os.path.exists(os.path.join(i, libraryname)):
+						lib = open(os.path.join(i,libraryname))
+						break
+					elif os.path.exists(os.path.join(i, libraryname+".1cc")):
+						lib = open(os.path.join(i, libraryname+".1cc"))
+						break
+				if not lib:
+					cprint("Failed to import {lib}. File not found.", color=bcolors.RED, lib=libraryname)
+					continue
+
+			imported_init, imported_clock = parse_commands(lib.read().split("\n"), context)
+			init_commands += imported_init
+			clock_commands += imported_clock
+
 		else:
 			init = False
 			conditional = False
@@ -258,7 +320,9 @@ if __name__ == "__main__":
 	  {cyan}TheDestruc7i0n{endc} and {golden}Wire Segal{endc}'s 1.9 One Command Generator
 	 {green}Prepend your command with `#` to comment it out.{endc}
 	 {green}Prepend your command with `DEFINE:` to make it a variable definition.{endc}
+	 {green}Prepend your command with `SET:` to make it an overriding variable definition.{endc}
 	        Example: `DEFINE:world hello` and `say $world` would say `hello`.
+	 {green}Prepend your command with `UNDEFINE:` to make it a variable undefiner.{endc}
 	 {green}Prepend your command with `REPEAT:` to make it a repeating command block.{endc}
 	 {green}Prepend your command with `INIT:` to make it only run when the structure is deployed.{endc}
 	 {green}`BLOCK:minecraft:{name}:{data}` will summon a block (thereby stopping the current `REPEAT:` signal.){endc}
@@ -281,6 +345,7 @@ if __name__ == "__main__":
 	commands = []
 	# get commands if file not specified
 	if not args.filepath:
+		context = os.path.dirname(__file__)
 		x = 1
 		command = cinput("Command {num}: ", num=x).strip()
 		while command:
@@ -291,13 +356,15 @@ if __name__ == "__main__":
 	else:
 		if args.filepath == "stdin":
 			commands = sys.stdin.read().split("\n")
+			context = os.path.dirname(__file__)
 		elif os.path.exists(args.filepath):
 			commands = open(args.filepath).read().split("\n")
+			context = os.path.dirname(args.filepath)
 		else:
 			raise IOError(format("File {file} not found.", file=args.filepath))
 
 
-	init_commands, clock_commands = parse_commands(commands)
+	init_commands, clock_commands = parse_commands(commands, context)
 
 
 	final_command = gen_stack(init_commands, clock_commands, mode, args.loud)
