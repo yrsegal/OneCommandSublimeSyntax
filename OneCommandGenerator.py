@@ -13,7 +13,15 @@ class Minecraft1ccBase(sublime_plugin.TextCommand):
 		fname = self.view.file_name()
 		document = self.view.substr(sublime.Region(0, self.view.size()))
 
-		init_commands, clock_commands = oneCommand.parse_commands(document.split("\n"))
+		if fname:
+			context = os.path.dirname(fname)
+		elif self.view.window().folders():
+			context = self.view.window().folders()
+		else:
+			context = None
+
+
+		init_commands, clock_commands = oneCommand.parse_commands(document.split("\n"), context)
 		final_command = oneCommand.gen_stack(init_commands, clock_commands, self.mode)
 
 		if len(final_command) > 32500:

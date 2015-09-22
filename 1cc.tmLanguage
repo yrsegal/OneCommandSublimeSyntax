@@ -54,9 +54,15 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)^\s*DEFINE:\s*\w+\b</string>
+			<string>(?i)^\s*(DEFINE:|SET:)\s*\w+\b</string>
 			<key>name</key>
 			<string>storage.type</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>(?i)^\s*(UNDEFINE:|IMPORT:)\s*\w+\b</string>
+			<key>name</key>
+			<string>entity.name.tag</string>
 		</dict>
 		<dict>
 			<key>match</key>

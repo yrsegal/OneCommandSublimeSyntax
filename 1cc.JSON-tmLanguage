@@ -5,38 +5,42 @@
   "fileTypes": ["1cc"],
 
   "patterns": [
-		{
-			"match": "^\\s*#.*$",
-			"name": "comment.line.number-sign"
-		},
+    {
+      "match": "^\\s*#.*$",
+      "name": "comment.line.number-sign"
+    },
     {
       "match": "^\\s*-",
       "name": "comment.line"
     },
-		{
-			"match": "\\$\\w+\\b",
-  		"name": "storage.type"
-		},
-		{
-			"match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*COND:",
-  		"name": "entity.name.tag"
-		},
+    {
+      "match": "\\$\\w+\\b",
+      "name": "storage.type"
+    },
+    {
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*COND:",
+      "name": "entity.name.tag"
+    },
     {
       "match": "(?i)^\\s*COND:",
       "name": "entity.name.tag"
     },
-		{
-			"match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*INIT:",
-  		"name": "entity.name.function"
-		},
+    {
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*INIT:",
+      "name": "entity.name.function"
+    },
     {
       "match": "(?i)^\\s*INIT:",
       "name": "entity.name.function"
     },
-		{
-			"match": "(?i)^\\s*DEFINE:\\s*\\w+\\b",
-  		"name": "storage.type"
-		},
+    {
+      "match": "(?i)^\\s*(DEFINE:|SET:)\\s*\\w+\\b",
+      "name": "storage.type"
+    },
+    {
+      "match": "(?i)^\\s*(UNDEFINE:|IMPORT:)\\s*\\w+\\b",
+      "name": "entity.name.tag"
+    },
     {
       "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*BLOCK:\\s*[\\w_:]+(:\\d{1,2})?",
       "name": "storage.type"
@@ -57,10 +61,10 @@
       "match": "~",
       "name": "constant.numeric"
     },
-		{
-			"match": "-?(?<!\\.)[\\d][bsl]?(?!\\.)",
-  		"name": "constant.numeric"
-		},
+    {
+      "match": "-?(?<!\\.)[\\d][bsl]?(?!\\.)",
+      "name": "constant.numeric"
+    },
     {
       "match": "-?\\d*\\.\\d+f?",
       "name": "constant.numeric"
@@ -69,22 +73,22 @@
       "match": "!",
       "name": "entity.name.tag"
     },
-  	{
-  		"match": "@[prae]",
-  		"name": "storage.type"
-  	},
-  	{
-  		"match": "[\\w_]+(?==[!\\w_])",
-  		"name": "variable.parameter"
-  	},
+    {
+      "match": "@[prae]",
+      "name": "storage.type"
+    },
+    {
+      "match": "[\\w_]+(?==[!\\w_])",
+      "name": "variable.parameter"
+    },
     {
       "match": "(?<==|=!)[\\w_]+",
       "name": "storage.type"
     },
-  	{
-  		"match": "\"([^\"\\\\]*(\\\\.)*)*\"",
-  		"name": "string.quoted.double"
-  	},
+    {
+      "match": "\"([^\"\\\\]*(\\\\.)*)*\"",
+      "name": "string.quoted.double"
+    },
     {
       "match": "§[\\da-fA-Fk-oK-OrR]?",
       "name": "invalid.illegal"
