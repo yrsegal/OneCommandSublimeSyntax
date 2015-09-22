@@ -218,12 +218,13 @@ def parse_commands(commands, context = None):
 			variables.append(CmdVariable(name, contents))
 
 		elif undefine_regex.match(command):
-			variable = undefine_regex.sub("", command).strip().split()[0]
-			if variable in varnames:
-				for i in variables:
-					if i.name == name:
-						variables.remove(i)
-				varnames.remove(name)
+			variables = undefine_regex.sub("", command).strip().split()
+			for variable in variables:
+				if variable and variable in varnames:
+					for i in variables:
+						if i.name == name:
+							variables.remove(i)
+					varnames.remove(name)
 
 		elif import_regex.match(command):
 			if context is None:
@@ -346,7 +347,7 @@ if __name__ == "__main__":
 	commands = []
 	# get commands if file not specified
 	if not args.filepath:
-		context = os.path.dirname(__file__)
+		context = os.path.curdir
 		x = 1
 		command = cinput("Command {num}: ", num=x).strip()
 		while command:
