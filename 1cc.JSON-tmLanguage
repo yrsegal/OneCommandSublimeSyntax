@@ -100,6 +100,10 @@
     {
       "match": "minecraft:",
       "name": "entity.name.tag"
+    },
+    {
+      "match": "\\|[a-zA-Z0-9_]+\\|",
+      "name": "variable.parameter"
     }
   ],
   "uuid": "cabd43d7-cf20-4530-8822-b50016a67fe8"

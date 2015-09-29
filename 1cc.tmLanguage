@@ -154,6 +154,12 @@
 			<key>name</key>
 			<string>entity.name.tag</string>
 		</dict>
+		<dict>
+			<key>match</key>
+			<string>\|[a-zA-Z0-9_]+\|</string>
+			<key>name</key>
+			<string>variable.parameter</string>
+		</dict>
 	</array>
 	<key>scopeName</key>
 	<string>source.one_command</string>
