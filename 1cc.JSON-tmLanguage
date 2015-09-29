@@ -18,7 +18,7 @@
       "name": "storage.type"
     },
     {
-      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*COND:",
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:)\\s*COND:",
       "name": "entity.name.tag"
     },
     {
@@ -26,7 +26,7 @@
       "name": "entity.name.tag"
     },
     {
-      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*INIT:",
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:)\\s*INIT:",
       "name": "entity.name.function"
     },
     {
@@ -34,7 +34,7 @@
       "name": "entity.name.function"
     },
     {
-      "match": "(?i)^\\s*(DEFINE:|SET:)\\s*\\w+\\b",
+      "match": "(?i)^\\s*DEFINE:\\s*\\w+\\b",
       "name": "storage.type"
     },
     {
@@ -42,7 +42,7 @@
       "name": "entity.name.tag"
     },
     {
-      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*BLOCK:\\s*[\\w_:]+(:\\d{1,2})?",
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:)\\s*BLOCK:\\s*[\\w_:]+(:\\d{1,2})?",
       "name": "storage.type"
     },
     {
@@ -50,7 +50,7 @@
       "name": "storage.type"
     },
     {
-      "match": "(?i)(?<=INIT:|COND:|REPEAT:|BLOCK:)\\s*REPEAT:",
+      "match": "(?i)(?<=INIT:|COND:|REPEAT:)\\s*REPEAT:",
       "name": "constant.language"
     },
     {
