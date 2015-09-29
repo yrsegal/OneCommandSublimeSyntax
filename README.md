@@ -38,7 +38,7 @@ Most of the differences between 1CC syntax and regular commands lie in the prepe
 
 There's also the `DEFINE:` syntax, similar to the C `#define` directive. This allows simpler-to-read blocks of code to be written.  
 The syntax is `DEFINE: identifier replacewith`. You can then use this by calling out, anywhere in your code, `$identifier`.  
-`SET:` is similar to `DEFINE:`, except it will override any previous definition of that variable.  
+As with C, `DEFINE:` can be used to make macros. For example, `DEFINE: example(argument) say |argument|` and `$example("hello")` will give you `say hello`.
 There's also `UNDEFINE:` which will remove that variable's definition.  
 
 `IMPORT:` will import the `.1cc` file of the same name. `IMPORT: test` will import the file named `test.1cc`.
