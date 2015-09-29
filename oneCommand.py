@@ -3,20 +3,17 @@ from __future__ import print_function
 from util import *
 import nbtencoder as nbt
 
-import re
-import sys, os
+import math
 
 cprintconf.name = "Generator"
 cprintconf.color = bcolors.PEACH
 
 class Command:
-	def __init__(self, cmd, block="chain_command_block", init=False, conditional=False, variables=[]):
+	def __init__(self, cmd, block="chain_command_block", init=False, conditional=False):
 		self.cmd = cmd
 		self.cond = conditional
 		self.init = init
 		self.block = block
-		for i in variables:
-			self.cmd = i.sub(self.cmd)
 	def __str__(self):
 		return self.cmd
 	def prettystr(self):
@@ -28,11 +25,9 @@ class Command:
 
 class FakeCommand:
 	hasdata_regex = re.compile(r":\d{1,2}$")
-	def __init__(self, blockname, init, variables=[]):
+	def __init__(self, blockname, init):
 		self.cond = False
 		self.init = init
-		for i in variables: 
-			blockname = i.sub(blockname)
 		if self.hasdata_regex.search(blockname):
 			datastr = self.hasdata_regex.findall(blockname)
 			self.data = int(datastr[0][1:])
@@ -55,6 +50,56 @@ class CmdVariable:
 		self.regex = re.compile(r"\$"+name.lower()+r"\b", re.IGNORECASE)
 	def sub(self, string):
 		return self.regex.sub(self.replacewith, string)
+
+def macrofunc(string, params, args):
+	for i in range(min(len(args), len(params))):
+		string = re.sub(r"\|" + params[i] + r"\|", args[i], string)
+	return string
+
+class CmdMacro:
+	param = r"\((?:(?:(?:-?\d+(?:\.\d+)?|\"(?:[^\"\\]*(?:\\.)*)*\"),\s*)*(?:-?\d+(?:\.\d+)?|\"(?:[^\"\\]*(?:\\.)*)*\"))?\)"
+	param_regex = re.compile(param)
+	def __init__(self, name, params, replacewith, function=macrofunc):
+		self.name = name
+		self.replacewith = replacewith
+		self.params = params
+		self.regex = re.compile(r"\$"+name.lower()+self.param, re.IGNORECASE)
+		self.function = function
+	def sub(self, string):
+		while self.regex.search(string):
+			found = self.regex.finditer(string)
+			for find in found:
+				params = self.param_regex.search(find.group()).group()[1:-1]
+				params = re.sub(r",\s", ",", params)
+				paraml = params.split(",")
+				parsedparams = []
+				for i in paraml:
+					if i:
+						if i[0] == '"':
+							i = i[1:-1].replace('\\"', '"').replace('\\\\', '\\')
+						parsedparams.append(i)
+				try:
+					output = self.function(self.replacewith, self.params, parsedparams)
+				except:
+					cprint("{params} is not a valid argument list for ${funcname}.", color=bcolors.RED, params=params, funcname=self.name)
+					output = ""
+				string = string.replace(find.group(), output)
+		return string
+
+sin = lambda string, params, args: repr(math.sin(math.radians(float(args[0]))))
+cos = lambda string, params, args: repr(math.sin(math.radians(float(args[0]))))
+tan = lambda string, params, args: repr(math.sin(math.radians(float(args[0]))))
+sinr= lambda string, params, args: repr(math.sin(float(args[0])))
+cosr= lambda string, params, args: repr(math.sin(float(args[0])))
+tanr= lambda string, params, args: repr(math.sin(float(args[0])))
+floor=lambda string, params, args: repr(int(math.floor(float(args[0]))))
+ceil= lambda string, params, args: repr(int(math.ceil(float(args[0]))))
+rnd_l=lambda string, params, args: repr(round(float(args[0]), int(args[1])))
+add = lambda string, params, args: repr(float(args[0]) + float(args[1]))
+sub = lambda string, params, args: repr(float(args[0]) - float(args[1]))
+mul = lambda string, params, args: repr(float(args[0]) * float(args[1]))
+div = lambda string, params, args: repr(float(args[0]) / float(args[1]))
+pow_l=lambda string, params, args: repr(float(args[0]) **float(args[1]))
 
 
 def generate_sand(command_obj, direction):
@@ -146,95 +191,127 @@ def gen_stack(init_commands, clock_commands, mode, loud=False):
 
 	return final_command
 
-tag_regex =        re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:)[\t]*)+", re.IGNORECASE)
-init_tag_regex =   re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*INIT:", re.IGNORECASE)
-cond_tag_regex =   re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*COND:", re.IGNORECASE)
-repeat_tag_regex = re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*REPEAT:", re.IGNORECASE)
-block_tag_regex =  re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*(minecraft:)?[a-z_](:\d{1,2})?", re.IGNORECASE)
-block_regex =      re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*", re.IGNORECASE)
-define_regex =     re.compile(r"^[ \t]*DEFINE:", re.IGNORECASE)
-undefine_regex =   re.compile(r"^[ \t]*UNDEFINE:", re.IGNORECASE)
-set_regex =        re.compile(r"^[ \t]*SET:", re.IGNORECASE)
-import_regex =     re.compile(r"^[ \t]*IMPORT:", re.IGNORECASE)
-comment_regex =    re.compile(r"^[ \t]*#", re.IGNORECASE)
-nonewline_regex =  re.compile(r"^[ \t]*-", re.IGNORECASE)
+tag_regex =         re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:)[\t]*)+", re.IGNORECASE)
+init_tag_regex =    re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*INIT:", re.IGNORECASE)
+cond_tag_regex =    re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*COND:", re.IGNORECASE)
+repeat_tag_regex =  re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*REPEAT:", re.IGNORECASE)
+block_tag_regex =   re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*(minecraft:)?[a-z_](:\d{1,2})?", re.IGNORECASE)
+block_regex =       re.compile(r"^[ \t]*((INIT:|COND:|REPEAT:|BLOCK:)[ \t]*)*BLOCK:[ \t]*", re.IGNORECASE)
+define_regex =      re.compile(r"^[ \t]*DEFINE:", re.IGNORECASE)
+word_regex =        re.compile(r"[a-zA-Z0-9_]+") # this regex has had me laughing for a while, but i need it
+param_regex =       re.compile(r"\(([a-zA-Z0-9_]+,)*[a-zA-Z0-9_]+\)")
+macro_regex =       re.compile(r"[a-zA-Z0-9_]+\(([a-zA-Z0-9_]+,)*[a-zA-Z0-9_]+\)")
+undefine_regex =    re.compile(r"^[ \t]*UNDEFINE:", re.IGNORECASE)
+import_regex =      re.compile(r"^[ \t]*IMPORT:", re.IGNORECASE)
+comment_regex =     re.compile(r"^[ \t]*#")
+skipnewline_regex = re.compile(r"\\[ \t]*$")
+line_var_regex =    re.compile(r"\$line\b", re.IGNORECASE)
 
-def parse_commands(commands, context = None):
-	init_commands = []
-	clock_commands = []
-	variables = []
-	varnames = []
-
+def preprocess(commands, context = None, filename = None):
+	currtime = time.localtime()
+	variables = {
+		"file": CmdVariable("file", str(filename)),
+		"date": CmdVariable("date", format("{month}/{day}/{year}", # I'm american >:D
+			month = currtime.tm_mon,
+			day = currtime.tm_mday,
+			year = currtime.tm_year
+		)), 
+		"time": CmdVariable("time", format("{hour}:{minute}:{second}",
+			hour = currtime.tm_hour,
+			minute = currtime.tm_min,
+			second = currtime.tm_sec
+		)),
+		"pi": CmdVariable("pi", repr(math.pi)),
+		"e": CmdVariable("e", repr(math.e))
+	}
+	functions = {
+		"sin":   CmdMacro("sin",   [], "", sin),
+		"cos":   CmdMacro("cos",   [], "", cos),
+		"tan":   CmdMacro("tan",   [], "", tan),
+		"sinr":  CmdMacro("sinr",  [], "", sinr),
+		"cosr":  CmdMacro("cosr",  [], "", cosr),
+		"tanr":  CmdMacro("tanr",  [], "", tanr),
+		"floor": CmdMacro("floor", [], "", floor),
+		"ceil":  CmdMacro("ceil",  [], "", ceil),
+		"round": CmdMacro("round", [], "", rnd_l),
+		"add":   CmdMacro("add",   [], "", add),
+		"sub":   CmdMacro("sub",   [], "", sub),
+		"mul":   CmdMacro("mul",   [], "", mul),
+		"div":   CmdMacro("div",   [], "", div),
+		"pow":   CmdMacro("pow",   [], "", pow_l)
+	}
+	func_regex = re.compile("\\$("+"|".join(map(lambda x: functions[x].name, functions))+")"+CmdMacro.param, re.IGNORECASE)
+	outcommands = []
 	compactedcommands = []
-	next_command = ""
-	for command in commands[::-1]:
-		if nonewline_regex.match(command):
-			next_command = nonewline_regex.sub("", command).replace("\t", "").rstrip() + next_command
+	cindex = 0
+	while cindex < len(commands):
+		command = line_var_regex.sub(str(cindex+1), commands[cindex])
+		if skipnewline_regex.search(command):
+			new_command = skipnewline_regex.sub("", command)
+			next_command = "\\"
+			while skipnewline_regex.search(next_command):
+				if cindex != len(commands)-1:
+					cindex += 1
+					next_command = line_var_regex.sub(str(cindex+1), commands[cindex])
+				else:
+					next_command = ""
+				new_command += skipnewline_regex.sub("", next_command.strip())
+			compactedcommands.append(new_command)
 		else:
-			compactedcommands.insert(0, command.replace("\t", "").rstrip() + next_command)
-			next_command = ""
+			compactedcommands.append(command)
+		cindex += 1
 
-	# do all INIT and COND checking
+
 	for command in compactedcommands:
 		command = command.strip()
-		if comment_regex.match(command): continue
+		if not command or comment_regex.match(command): continue
+
+		for var in variables:
+			command = variables[var].sub(command)
+		while func_regex.search(command):
+			for macro in functions:
+				command = functions[macro].sub(command)
 
 		if define_regex.match(command):
 			command_split = define_regex.sub("", command).split()
-			while not command_split[0]: command_split = command_split[1:]
-			while not command_split[1]: command_split = command_split[:1] + command_split[2:]
 			if len(command_split) < 2: continue
+
 			name = command_split[0]
+
 			contents = " ".join(command_split[1:])
-			for i in variables:
-				name = i.sub(name)
-				contents = i.sub(contents)
 
-			if name in varnames: 
-				cprint("""WARNING: Duplicate variable {var}. Using first definition.
-				          To overwrite the previous value of a variable, use the {bold}SET:{endc}{color} prepend.
-				          To undefine a variable, use the {bold}UNDEFINE:{endc}{color} prepend.""", color=bcolors.YELLOW, var=name, strip=True)
-			else:
-				varnames.append(name)
-				variables.append(CmdVariable(name, contents))
+			if macro_regex.match(name):
+				params = param_regex.search(name).group()[1:-1].split(",")
+				name = word_regex.search(name).group()
+				functions[name] = CmdMacro(name, params, contents)
+				func_regex = re.compile("\\$("+"|".join(map(lambda x: functions[x].name, functions))+")"+CmdMacro.param, re.IGNORECASE)
+				continue
 
-		elif set_regex.match(command):
-			command_split = set_regex.sub("", command).split()
-			while not command_split[0]: command_split = command_split[1:]
-			while not command_split[1]: command_split = command_split[:1] + command_split[2:]
-			if len(command_split) < 2: continue
-			name = command_split[0]
-			contents = " ".join(command_split[1:])
-			for i in variables:
-				name = i.sub(name)
-				contents = i.sub(contents)
-
-			if name in varnames: 
-				for i in variables:
-					if i.name == name:
-						variables.remove(i)
-				varnames.remove(name)
-			varnames.append(name)
-			variables.append(CmdVariable(name, contents))
+			if word_regex.match(name):
+				variables[name] = CmdVariable(name, contents)
 
 		elif undefine_regex.match(command):
-			variables = undefine_regex.sub("", command).strip().split()
-			for variable in variables:
-				if variable and variable in varnames:
-					for i in variables:
-						if i.name == name:
-							variables.remove(i)
-					varnames.remove(name)
+			variables_to_remove = undefine_regex.sub("", command).strip().split()
+			for var in variables_to_remove:
+				if var in variables:
+					del variables[var]
+				if var in functions:
+					del functions[var]
 
 		elif import_regex.match(command):
-			if context is None:
-				continue
+			if context is None: continue
+
 			libraryname = import_regex.sub("", command).strip()
 			if not libraryname: continue
+
 			if isinstance(context, str):
 				if os.path.exists(os.path.join(context, libraryname)):
+					importedcontext = context
+					importedname = libraryname
 					lib = open(os.path.join(context,libraryname))
 				elif os.path.exists(os.path.join(context, libraryname+".1cc")):
+					importedcontext = context
+					importedname = libraryname+".1cc"
 					lib = open(os.path.join(context, libraryname+".1cc"))
 				else:
 					cprint("Failed to import {lib}. File not found.", color=bcolors.RED, lib=libraryname)
@@ -243,43 +320,59 @@ def parse_commands(commands, context = None):
 				lib = None
 				for i in context:
 					if os.path.exists(os.path.join(i, libraryname)):
+						importedcontext = i
+						importedname = libraryname
 						lib = open(os.path.join(i,libraryname))
 						break
 					elif os.path.exists(os.path.join(i, libraryname+".1cc")):
+						importedcontext = i
+						importedname = libraryname+".1cc"
 						lib = open(os.path.join(i, libraryname+".1cc"))
 						break
 				if not lib:
 					cprint("Failed to import {lib}. File not found.", color=bcolors.RED, lib=libraryname)
 					continue
 
-			imported_init, imported_clock = parse_commands(lib.read().split("\n"), context)
-			init_commands += imported_init
-			clock_commands += imported_clock
-
+			outcommands += preprocess(lib.read().split("\n"), importedcontext, importedname)
 		else:
-			init = False
-			conditional = False
-			block = "chain_command_block"
-			if cond_tag_regex.match(command): conditional = True
-			if init_tag_regex.match(command): init = True
-			if repeat_tag_regex.match(command): block = "repeating_command_block"
-			if block_tag_regex.match(command):
-				block = block_regex.sub("", command).strip()
-				if init:
-					init_commands.append(FakeCommand(block, init, variables))
-				else:
-					clock_commands.append(FakeCommand(block, init, variables))
-				continue
+			outcommands.append(command)
+	return outcommands
 
-			command = tag_regex.sub("", command).strip()
-			if not command: continue
-
-			command_obj = Command(command, block=block, conditional=conditional, init=init, variables=variables)
 			
+
+
+
+def parse_commands(commands, context = None, filename = None):
+	init_commands = []
+	clock_commands = []
+
+	commands = preprocess(commands, context, filename)
+
+	# do all INIT and COND checking
+	for command in commands:
+		init = False
+		conditional = False
+		block = "chain_command_block"
+		if cond_tag_regex.match(command): conditional = True
+		if init_tag_regex.match(command): init = True
+		if repeat_tag_regex.match(command): block = "repeating_command_block"
+		if block_tag_regex.match(command):
+			block = block_regex.sub("", command).strip()
 			if init:
-				init_commands.append(command_obj)
+				init_commands.append(FakeCommand(block, init))
 			else:
-				clock_commands.append(command_obj)
+				clock_commands.append(FakeCommand(block, init))
+			continue
+
+		command = tag_regex.sub("", command).strip()
+		if not command: continue
+
+		command_obj = Command(command, block=block, conditional=conditional, init=init)
+		
+		if init:
+			init_commands.append(command_obj)
+		else:
+			clock_commands.append(command_obj)
 	return init_commands, clock_commands
 
 def ride(entities, have_id=True):
@@ -323,7 +416,6 @@ if __name__ == "__main__":
 	  {cyan}TheDestruc7i0n{endc} and {golden}Wire Segal{endc}'s 1.9 One Command Generator
 	 {green}Prepend your command with `#` to comment it out.{endc}
 	 {green}Prepend your command with `DEFINE:` to make it a variable definition.{endc}
-	 {green}Prepend your command with `SET:` to make it an overriding variable definition.{endc}
 	        Example: `DEFINE:world hello` and `say $world` would say `hello`.
 	 {green}Prepend your command with `UNDEFINE:` to make it a variable undefiner.{endc}
 	 {green}Prepend your command with `REPEAT:` to make it a repeating command block.{endc}
@@ -348,6 +440,7 @@ if __name__ == "__main__":
 	commands = []
 	# get commands if file not specified
 	if not args.filepath:
+		filename = None
 		context = os.path.curdir
 		x = 1
 		command = cinput("Command {num}: ", num=x).strip()
@@ -358,17 +451,17 @@ if __name__ == "__main__":
 	# get commands from specified file
 	else:
 		if args.filepath == "stdin":
+			filename = None
 			commands = sys.stdin.read().split("\n")
 			context = os.path.dirname(__file__)
 		elif os.path.exists(args.filepath):
+			filename = os.path.basename(args.filepath)
 			commands = open(args.filepath).read().split("\n")
 			context = os.path.dirname(args.filepath)
 		else:
 			raise IOError(format("File {file} not found.", file=args.filepath))
 
-
-	init_commands, clock_commands = parse_commands(commands, context)
-
+	init_commands, clock_commands = parse_commands(commands, context, filename)
 
 	final_command = gen_stack(init_commands, clock_commands, mode, args.loud)
 	
