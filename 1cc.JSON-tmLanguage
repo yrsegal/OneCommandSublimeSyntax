@@ -18,7 +18,7 @@
       "name": "comment.line"
     },
     {
-      "match": "\\$\\w+\\b",
+      "match": "\\$\\w+\\b|\\|\\$\\w+\\|",
       "name": "storage.type"
     },
     {

@@ -30,7 +30,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\$\w+\b</string>
+			<string>\$\w+\b|\|\$\w+\|</string>
 			<key>name</key>
 			<string>storage.type</string>
 		</dict>
