@@ -10,7 +10,7 @@
       "name": "comment.line.number-sign"
     },
     {
-      "match": "^\\s*-",
+      "match": "\\\\\\s*$",
       "name": "comment.line"
     },
     {

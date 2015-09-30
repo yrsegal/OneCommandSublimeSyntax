@@ -11,26 +11,19 @@ https://twitter.com/TexelElf
 """
 
 import sublime, sublime_plugin, re
-dash_regex =  re.compile(r"^[ \t]*-")
-end_regex =   re.compile(r"\n$")
-tab_regex =   re.compile(r"- \t+")
+end_regex =         re.compile(r"\\\n$")
+skipnewline_regex = re.compile(r"\\[ \t]*$")
+tab_regex =         re.compile(r"^\t")
 
-ready_regex = re.compile(r"\[|\{")
+ready_regex =       re.compile(r"^[^\[\{\n]*(\[|\{)")
 
 class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 
 	""" Base code | Majority is from @TexelElf """
 
 	@staticmethod
-	def indent(ct, space=False):
-		sp = " " if space else ""
-		return "\t"*(ct+1) +"-{0}\t".format(sp)
-
-	@staticmethod
-	def dashsub(string):
-		if dash_regex.match(string):
-			return dash_regex.sub("", tab_regex.sub("- ", string)).lstrip("\t").rstrip(" ")
-		return string.rstrip(" ")
+	def indent(ct):
+		return "\t"*(ct+1)
 
 	def strexplode(self, command):
 		coms = []
@@ -45,17 +38,16 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 					line += command[c]
 				else:
 					if line:
-						coms.append(self.indent(i)+line+"\n")
+						coms.append(self.indent(i)+line+"\\\n")
 						line = ""
-					space = command[c-1] == " "
-					coms.append(self.indent(i, space)+"{\n")
+					coms.append(self.indent(i)+"{"+"\\\n")
 					i += 1
 			elif command[c] == "}":
 				if inquote:
 					line += command[c]
 				else:
 					if line:
-						coms.append(self.indent(i)+line+"\n")
+						coms.append(self.indent(i)+line+"\\\n")
 						line = ""
 					i -= 1
 					line += command[c]
@@ -64,17 +56,16 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 					line += command[c]
 				else:
 					if line:
-						coms.append(self.indent(i)+line+"\n")
+						coms.append(self.indent(i)+line+"\\\n")
 						line = ""
-					space = command[c-1] == " "
-					coms.append(self.indent(i, space)+"[\n")
+					coms.append(self.indent(i)+"["+"\\\n")
 					i += 1
 			elif command[c] == "]":
 				if inquote:
 					line += command[c]
 				else:
 					if line:
-						coms.append(self.indent(i)+line+"\n")
+						coms.append(self.indent(i)+line+"\\\n")
 						line = ""
 					i -= 1
 					line += command[c]
@@ -89,7 +80,7 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 				if inquote:
 					line += command[c]
 				else:
-					coms.append(self.indent(i)+line+",\n")
+					coms.append(self.indent(i)+line+",\\\n")
 					line = ""
 			elif command[c] == " ":
 				if c:
@@ -98,20 +89,30 @@ class MinecraftFormatBaseCommand(sublime_plugin.TextCommand):
 				line += command[c]
 		else:
 			if line:
-				coms.append(self.indent(i)+line+"\n")
+				coms.append(self.indent(i)+line+"\\\n")
 		return coms
 
 
 	def strcollapse(self, lines):
-		command = ""
-		for l in lines:
-			if not l:
-				continue
-			elif l is not lines[-1] and dash_regex.match(lines[lines.index(l)+1]):
-				command += self.dashsub(l.rstrip("\n"))
+		commands = []
+		cindex = 0
+		while cindex < len(lines):
+			command = lines[cindex]
+			if skipnewline_regex.search(command):
+				new_command = skipnewline_regex.sub("", command.rstrip())
+				next_command = "\\"
+				while skipnewline_regex.search(next_command):
+					if cindex != len(lines)-1:
+						cindex += 1
+						next_command = lines[cindex]
+					else:
+						next_command = ""
+					new_command += skipnewline_regex.sub("", next_command.strip())
+				commands.append(new_command)
 			else:
-				command += self.dashsub(l)
-		return command
+				commands.append(command)
+			cindex += 1
+		return "\n".join(commands)
 				
 class MinecraftOneccFormatCommand(MinecraftFormatBaseCommand):
 	
@@ -135,12 +136,10 @@ class MinecraftOneccFormatCommand(MinecraftFormatBaseCommand):
 
 			if ready_regex.search(fs):
 				mdatapos = ready_regex.search(fs).start()
-				if mdatapos: mdatapos -= 1
-				outputlines.append(fs[:mdatapos]+"\n")
 				outputlines+=self.strexplode(fs[mdatapos:])
 			else:
 				outputlines.append(str(fs)+"\n")
-			out = end_regex.sub("", "".join(outputlines))
+			out = tab_regex.sub("", end_regex.sub("", "".join(outputlines)))
 
 			self.view.replace(edit, selection, out)
 
