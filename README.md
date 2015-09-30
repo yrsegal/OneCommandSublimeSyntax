@@ -16,10 +16,10 @@ Generates a manually-activated one-command contraption from the current file.
 Sorts any entity/player selector tags within the selection by alphabetical order.
 
 #### `minecraft_onecc_format`
-Explodes the commands selected, using `-` syntax to keep them in the same line in the eyes of the generator.
+Explodes the commands selected, using `\` syntax to keep them in the same line in the eyes of the generator.
 
 #### `minecraft_onecc_unformat`
-Compresses `-` syntax down to normal lines.
+Compresses `\` syntax down to normal lines.
 
 ---
 
