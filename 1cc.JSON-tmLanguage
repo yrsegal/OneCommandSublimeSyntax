@@ -82,7 +82,7 @@
       "name": "storage.type"
     },
     {
-      "match": "[\\w_]+(?==[!\\w_])",
+      "match": "[\\w_]+(?==[!\\w_\\|\\$])",
       "name": "variable.parameter"
     },
     {
