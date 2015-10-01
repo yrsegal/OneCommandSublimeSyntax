@@ -14,7 +14,7 @@
       "name": "comment.line"
     },
     {
-      "match": "\\|\\\\n\\|",
+      "match": "\\\\;",
       "name": "comment.line"
     },
     {
