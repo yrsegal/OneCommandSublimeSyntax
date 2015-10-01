@@ -24,7 +24,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\|\\n\|</string>
+			<string>\\;</string>
 			<key>name</key>
 			<string>comment.line</string>
 		</dict>
