@@ -1,7 +1,6 @@
 import sublime, sublime_plugin
 import os, sys
-sys.path.append(os.path.join(os.getcwd(), "OneCommand"))
-import oneCommand
+import OneCommand
 
 filepath = os.getcwd()
 
@@ -21,8 +20,8 @@ class Minecraft1ccBase(sublime_plugin.TextCommand):
 			context = None
 
 
-		init_commands, clock_commands = oneCommand.parse_commands(document.split("\n"), context)
-		final_command = oneCommand.gen_stack(init_commands, clock_commands, self.mode)
+		init_commands, clock_commands = OneCommand.parse_commands(document.split("\n"), context)
+		final_command = OneCommand.gen_stack(init_commands, clock_commands, self.mode)
 
 		if len(final_command) > 32500:
 			sublime.error_message("Resultant command too large ({} > 32500)".format(len(final_command)))
