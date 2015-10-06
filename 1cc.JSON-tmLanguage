@@ -62,6 +62,14 @@
       "name": "constant.language"
     },
     {
+      "match": "(?i)^[ \\t]*FOR[ \\t]*\\(-?\\d+(?:\\.\\d+)?(?:,-?\\d+(?:\\.\\d+)?){0,2}\\):[ \\t]*$",
+      "name": "storage.type"
+    },
+    {
+      "match": "(?i)^[ \\t]*:ENDFOR[ \\t]*$",
+      "name": "storage.type"
+    },
+    {
       "match": "~",
       "name": "constant.numeric"
     },
@@ -106,7 +114,7 @@
       "name": "entity.name.tag"
     },
     {
-      "match": "\\|[a-zA-Z0-9_]+\\|",
+      "match": "\\|[a-zA-Z0-9_]*\\|",
       "name": "variable.parameter"
     }
   ],

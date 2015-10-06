@@ -96,6 +96,18 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>(?i)^[ \t]*FOR[ \t]*\(-?\d+(?:\.\d+)?(?:,-?\d+(?:\.\d+)?){0,2}\):[ \t]*$</string>
+			<key>name</key>
+			<string>storage.type</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*:ENDFOR[ \t]*$</string>
+			<key>name</key>
+			<string>storage.type</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>~</string>
 			<key>name</key>
 			<string>constant.numeric</string>
@@ -162,7 +174,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\|[a-zA-Z0-9_]+\|</string>
+			<string>\|[a-zA-Z0-9_]*\|</string>
 			<key>name</key>
 			<string>variable.parameter</string>
 		</dict>
