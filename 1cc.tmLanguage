@@ -12,171 +12,288 @@
 	<array>
 		<dict>
 			<key>match</key>
-			<string>^\s*#.*$</string>
+			<string>^[ \t]*#.*$</string>
 			<key>name</key>
-			<string>comment.line.number-sign</string>
+			<string>comment.line.number-sign.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\\\s*$</string>
+			<string>\\[ \t]*$</string>
 			<key>name</key>
-			<string>comment.line</string>
+			<string>comment.other.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>\\;</string>
 			<key>name</key>
-			<string>comment.line</string>
+			<string>comment.other.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\$\w+\b|\|\$\w+\|</string>
+			<string>\$[a-zA-Z0-9_]+\b(?!\()</string>
 			<key>name</key>
-			<string>storage.type</string>
+			<string>storage.type.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)(?&lt;=INIT:|COND:|REPEAT:)\s*COND:</string>
+			<string>\|\$[a-zA-Z0-9_]+\b\|</string>
 			<key>name</key>
-			<string>entity.name.tag</string>
+			<string>storage.type.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)^\s*COND:</string>
+			<string>\$[a-zA-Z0-9_]+\b(?=\()</string>
 			<key>name</key>
-			<string>entity.name.tag</string>
+			<string>entity.name.function.one_command</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)(?&lt;=INIT:|COND:|REPEAT:)\s*(COND|INIT|REPEAT):</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^\s*(COND|INIT|REPEAT):</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(?:(?:INIT:|COND:|REPEAT:)[ \t]*)*?(INIT):[ 	]*</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(?:(?:INIT:|COND:|REPEAT:)[ \t]*)*?(COND):[ 	]*</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(DEFINE):[ \t]*([a-zA-Z0-9_]+)\b(?!\()</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(DEFINE):[ \t]*([a-zA-Z0-9_]+)(?:\((?:[a-zA-Z0-9_]+,)*[a-zA-Z0-9_]+\))?</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.modifier.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(UNDEFINE):[ \t]*[a-zA-Z0-9_]+\b</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)(?&lt;=INIT:|COND:|REPEAT:)[ \t]*(BLOCK):[ \t]*[a-zA-Z0-9_:]+(:\d{1,2})?</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(BLOCK):[ \t]*[a-zA-Z0-9_:]+(:\d{1,2})?</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.one_command</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.one_command</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.one_command</string>
+				</dict>
+				<key>5</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*(FOR)[ \t]*\((?:([a-zA-Z0-9_]+);)?(-?\d+(?:\.\d+)?)(?:,(-?\d+(?:\.\d+)?))?(?:,(-?\d+(?:\.\d+)?))?\):[ \t]*$</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.one_command</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>string.unquoted.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>([a-zA-Z0-9_]+)=(!)?([a-zA-Z_\|\$]+)</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>variable.parameter.one_command</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>([a-zA-Z0-9_]+)=(\d+)+</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?i)^[ \t]*:(ENDFOR)[ \t]*$</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)(?&lt;=INIT:|COND:|REPEAT:)\s*INIT:</string>
+			<string>(?&lt;![a-zA-Z0-9_]=)~|-?\d*\.\d+f?</string>
 			<key>name</key>
-			<string>entity.name.function</string>
+			<string>constant.numeric.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i)^\s*INIT:</string>
+			<string>-?(?&lt;![a-zA-Z0-9_]=|\.)[\d][bsl]?(?!\.)</string>
 			<key>name</key>
-			<string>entity.name.function</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)^\s*DEFINE:\s*\w+\b</string>
-			<key>name</key>
-			<string>storage.type</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)^\s*(UNDEFINE:|IMPORT:)\s*\w+\b</string>
-			<key>name</key>
-			<string>entity.name.tag</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)(?&lt;=INIT:|COND:|REPEAT:)\s*BLOCK:\s*[\w_:]+(:\d{1,2})?</string>
-			<key>name</key>
-			<string>storage.type</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)^\s*BLOCK:\s*[\w_:]+(:\d{1,2})?</string>
-			<key>name</key>
-			<string>storage.type</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)(?&lt;=INIT:|COND:|REPEAT:)\s*REPEAT:</string>
-			<key>name</key>
-			<string>constant.language</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)^\s*REPEAT:</string>
-			<key>name</key>
-			<string>constant.language</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)^[ \t]*FOR[ \t]*\(-?\d+(?:\.\d+)?(?:,-?\d+(?:\.\d+)?){0,2}\):[ \t]*$</string>
-			<key>name</key>
-			<string>storage.type</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?i)^[ \t]*:ENDFOR[ \t]*$</string>
-			<key>name</key>
-			<string>storage.type</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>~</string>
-			<key>name</key>
-			<string>constant.numeric</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>-?(?&lt;!\.)[\d][bsl]?(?!\.)</string>
-			<key>name</key>
-			<string>constant.numeric</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>-?\d*\.\d+f?</string>
-			<key>name</key>
-			<string>constant.numeric</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>!</string>
-			<key>name</key>
-			<string>entity.name.tag</string>
+			<string>constant.numeric.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>@[prae]</string>
 			<key>name</key>
-			<string>storage.type</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>[\w_]+(?==[!\w_\|\$])</string>
-			<key>name</key>
-			<string>variable.parameter</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(?&lt;==|=!)[\w_]+</string>
-			<key>name</key>
-			<string>storage.type</string>
+			<string>storage.type.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>"([^"\\]*(\\.)*)*"</string>
 			<key>name</key>
-			<string>string.quoted.double</string>
+			<string>string.quoted.double.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>§[\da-fA-Fk-oK-OrR]?</string>
 			<key>name</key>
-			<string>invalid.illegal</string>
+			<string>invalid.illegal.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>false|true</string>
 			<key>name</key>
-			<string>constant.language</string>
+			<string>constant.language.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>minecraft:</string>
 			<key>name</key>
-			<string>entity.name.tag</string>
+			<string>constant.language.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
 			<string>\|[a-zA-Z0-9_]*\|</string>
 			<key>name</key>
-			<string>variable.parameter</string>
+			<string>variable.parameter.one_command</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
