@@ -90,10 +90,11 @@
       }
     },
     {
-      "match": "([a-zA-Z0-9_]+)=(\\d+)+",
+      "match": "([a-zA-Z0-9_]+)=(!)?(\\d+)+",
       "captures": {
         "1": {"name": "variable.parameter.one_command"},
-        "2": {"name": "constant.numeric.one_command"}
+        "2": {"name": "keyword.control.one_command"},
+        "3": {"name": "constant.numeric.one_command"}
       }
     },
     {
@@ -101,11 +102,19 @@
       "captures": {"1": {"name": "keyword.control.one_command"}}
     },
     {
+      "match": "(?<![a-zA-Z0-9_]=!)~|-?\\d*\\.\\d+f?",
+      "name": "constant.numeric.one_command"
+    },
+    {
       "match": "(?<![a-zA-Z0-9_]=)~|-?\\d*\\.\\d+f?",
       "name": "constant.numeric.one_command"
     },
     {
-      "match": "-?(?<![a-zA-Z0-9_]=|\\.)[\\d][bsl]?(?!\\.)",
+      "match": "-?(?<![a-zA-Z0-9_]=!|\\.)[\\d][bsl]?(?!\\.)",
+      "name": "constant.numeric.one_command"
+    },
+    {
+      "match": "-?(?<![a-zA-Z0-9_]=)[\\d][bsl]?(?!\\.)",
       "name": "constant.numeric.one_command"
     },
     {

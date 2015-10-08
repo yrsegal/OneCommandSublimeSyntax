@@ -229,11 +229,16 @@
 				<key>2</key>
 				<dict>
 					<key>name</key>
+					<string>keyword.control.one_command</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
 					<string>constant.numeric.one_command</string>
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>([a-zA-Z0-9_]+)=(\d+)+</string>
+			<string>([a-zA-Z0-9_]+)=(!)?(\d+)+</string>
 		</dict>
 		<dict>
 			<key>captures</key>
@@ -249,13 +254,25 @@
 		</dict>
 		<dict>
 			<key>match</key>
+			<string>(?&lt;![a-zA-Z0-9_]=!)~|-?\d*\.\d+f?</string>
+			<key>name</key>
+			<string>constant.numeric.one_command</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>(?&lt;![a-zA-Z0-9_]=)~|-?\d*\.\d+f?</string>
 			<key>name</key>
 			<string>constant.numeric.one_command</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>-?(?&lt;![a-zA-Z0-9_]=|\.)[\d][bsl]?(?!\.)</string>
+			<string>-?(?&lt;![a-zA-Z0-9_]=!|\.)[\d][bsl]?(?!\.)</string>
+			<key>name</key>
+			<string>constant.numeric.one_command</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>-?(?&lt;![a-zA-Z0-9_]=)[\d][bsl]?(?!\.)</string>
 			<key>name</key>
 			<string>constant.numeric.one_command</string>
 		</dict>
