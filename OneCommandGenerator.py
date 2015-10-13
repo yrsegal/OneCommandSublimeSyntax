@@ -19,9 +19,8 @@ class Minecraft1ccBase(sublime_plugin.TextCommand):
 		else:
 			context = None
 
-
 		init_commands, clock_commands = OneCommand.parse_commands(document.split("\n"), context)
-		final_command = OneCommand.gen_stack(init_commands, clock_commands, self.mode)
+		final_command = OneCommand.gen_cart_stack(init_commands, clock_commands, self.mode)
 
 		if len(final_command) > 32500:
 			sublime.error_message("Resultant command too large ({} > 32500)".format(len(final_command)))
