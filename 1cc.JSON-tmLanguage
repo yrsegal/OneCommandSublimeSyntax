@@ -118,19 +118,7 @@
       "captures": {"1": {"name": "keyword.control.one_command"}}
     },
     {
-      "match": "(?<![a-zA-Z0-9_]=!)~|-?\\d*\\.\\d+f?",
-      "name": "constant.numeric.one_command"
-    },
-    {
-      "match": "(?<![a-zA-Z0-9_]=)~|-?\\d*\\.\\d+f?",
-      "name": "constant.numeric.one_command"
-    },
-    {
-      "match": "-?(?<![a-zA-Z0-9_]=!|\\.)[\\d][bsl]?(?!\\.)",
-      "name": "constant.numeric.one_command"
-    },
-    {
-      "match": "-?(?<![a-zA-Z0-9_]=)[\\d][bsl]?(?!\\.)",
+      "match": "~|-?\\d*(?:\\d[bsl]?|\\.\\d+f?)",
       "name": "constant.numeric.one_command"
     },
     {
@@ -146,6 +134,10 @@
         "2": {"name": "invalid.illegal.one_command"}
       }, 
       "patterns": [
+        {
+          "name": "constant.numeric.one_command",
+          "match": "~|-?\\d*(?:\\d[bsl]?|\\.\\d+f?)"
+        },
         {
           "name": "constant.character.escape.one_command",
           "match": "\\\\."
