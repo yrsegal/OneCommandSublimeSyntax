@@ -109,24 +109,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?i)^[ \t]*(DEFINE):[ \t]*([a-zA-Z0-9_]+)\b(?!\()</string>
-		</dict>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>storage.type.one_command</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.one_command</string>
-				</dict>
-			</dict>
-			<key>match</key>
-			<string>(?i)^[ \t]*(DEFINE):[ \t]*([a-zA-Z0-9_]+)(?:\((?:[a-zA-Z0-9_]+,)*[a-zA-Z0-9_]+\))?</string>
+			<string>(?i)^[ \t]*(DEFINE):[ \t]*([a-zA-Z0-9_]+(?!\()\b)?</string>
 		</dict>
 		<dict>
 			<key>captures</key>
@@ -197,7 +180,32 @@
 			<string>(?i)^[ \t]*(FOR)[ \t]*\((?:([a-zA-Z0-9_]+);)?(-?\d+(?:\.\d+)?)(?:,(-?\d+(?:\.\d+)?))?(?:,(-?\d+(?:\.\d+)?))?\):[ \t]*$</string>
 		</dict>
 		<dict>
-			<key>captures</key>
+			<key>begin</key>
+			<string>([a-zA-Z0-9_]+)\(</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.one_command</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>([a-zA-Z0-9_]+)</string>
+					<key>name</key>
+					<string>variable.parameter.one_command</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>([a-zA-Z0-9_]+)=(!)?</string>
+			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
 				<dict>
@@ -209,36 +217,36 @@
 					<key>name</key>
 					<string>keyword.control.one_command</string>
 				</dict>
-				<key>3</key>
+			</dict>
+			<key>end</key>
+			<string>(?![a-zA-Z_\|\$])</string>
+			<key>patterns</key>
+			<array>
 				<dict>
+					<key>match</key>
+					<string>\|[a-zA-Z0-9_]*\|</string>
+					<key>name</key>
+					<string>variable.parameter.one_command</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\|\$?[a-zA-Z0-9_]*\|</string>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>[a-zA-Z_]</string>
 					<key>name</key>
 					<string>string.unquoted.one_command</string>
 				</dict>
-			</dict>
-			<key>match</key>
-			<string>([a-zA-Z0-9_]+)=(!)?([a-zA-Z_\|\$]+)</string>
-		</dict>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
 				<dict>
-					<key>name</key>
-					<string>variable.parameter.one_command</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control.one_command</string>
-				</dict>
-				<key>3</key>
-				<dict>
+					<key>match</key>
+					<string>(\d+)</string>
 					<key>name</key>
 					<string>constant.numeric.one_command</string>
 				</dict>
-			</dict>
-			<key>match</key>
-			<string>([a-zA-Z0-9_]+)=(!)?(\d+)+</string>
+			</array>
 		</dict>
 		<dict>
 			<key>captures</key>
@@ -283,10 +291,61 @@
 			<string>storage.type.one_command</string>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>"([^"\\]*(\\.)*)*"</string>
+			<key>begin</key>
+			<string>(?&lt;!\\)(\\\\)*"</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>constant.character.one_command</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?:(?&lt;!\\)(\\\\)*")|((?&lt;!\\)\n)</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>constant.character.one_command</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal.one_command</string>
+				</dict>
+			</dict>
 			<key>name</key>
 			<string>string.quoted.double.one_command</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\.</string>
+					<key>name</key>
+					<string>constant.character.escape.one_command</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\|[a-zA-Z0-9_]*\|</string>
+					<key>name</key>
+					<string>variable.parameter.one_command</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\|\$?[a-zA-Z0-9_]*\|</string>
+					<key>name</key>
+					<string>storage.type.one_command</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[ \t]*
+</string>
+					<key>name</key>
+					<string>comment.other.one_command</string>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>match</key>

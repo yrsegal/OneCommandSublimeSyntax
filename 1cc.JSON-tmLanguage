@@ -46,17 +46,10 @@
       "captures": {"1": {"name": "keyword.control.one_command"}}
     },
     {
-      "match": "(?i)^[ \\t]*(DEFINE):[ \\t]*([a-zA-Z0-9_]+)\\b(?!\\()",
+      "match": "(?i)^[ \\t]*(DEFINE):[ \\t]*([a-zA-Z0-9_]+(?!\\()\\b)?",
       "captures": {
         "1": {"name": "storage.type.one_command"},
         "2": {"name": "storage.type.one_command"}
-      }
-    },
-    {
-      "match": "(?i)^[ \\t]*(DEFINE):[ \\t]*([a-zA-Z0-9_]+)(?:\\((?:[a-zA-Z0-9_]+,)*[a-zA-Z0-9_]+\\))?",
-      "captures": {
-        "1": {"name": "storage.type.one_command"},
-        "2": {"name": "entity.name.function.one_command"}
       }
     },
     {
@@ -82,20 +75,43 @@
       }
     },
     {
-      "match": "([a-zA-Z0-9_]+)=(!)?([a-zA-Z_\\|\\$]+)",
-      "captures": {
-        "1": {"name": "variable.parameter.one_command"},
-        "2": {"name": "keyword.control.one_command"},
-        "3": {"name": "string.unquoted.one_command"}
+      "begin": "([a-zA-Z0-9_]+)\\(",
+      "patterns": [
+        {
+          "name": "variable.parameter.one_command",
+          "match": "([a-zA-Z0-9_]+)"
+        }
+      ],
+      "end": "\\)",
+      "beginCaptures": {
+        "1": {"name":"entity.name.function.one_command"}
       }
     },
     {
-      "match": "([a-zA-Z0-9_]+)=(!)?(\\d+)+",
-      "captures": {
+      "begin": "([a-zA-Z0-9_]+)=(!)?",
+      "beginCaptures": {
         "1": {"name": "variable.parameter.one_command"},
-        "2": {"name": "keyword.control.one_command"},
-        "3": {"name": "constant.numeric.one_command"}
-      }
+        "2": {"name": "keyword.control.one_command"}
+      },
+      "patterns": [
+        {
+          "name": "variable.parameter.one_command",
+          "match": "\\|[a-zA-Z0-9_]*\\|"
+        },
+        {
+          "name": "storage.type.one_command",
+          "match": "\\|\\$?[a-zA-Z0-9_]*\\|"
+        },
+        {
+          "name": "string.unquoted.one_command",
+          "match": "[a-zA-Z_]"
+        },
+        {
+          "name": "constant.numeric.one_command",
+          "match": "(\\d+)"
+        }
+      ],
+      "end": "(?![a-zA-Z_\\|\\$])"
     },
     {
       "match": "(?i)^[ \\t]*:(ENDFOR)[ \\t]*$",
@@ -122,7 +138,31 @@
       "name": "storage.type.one_command"
     },
     {
-      "match": "\"([^\"\\\\]*(\\\\.)*)*\"",
+      "begin": "(?<!\\\\)(\\\\\\\\)*\"",
+      "beginCaptures": {"1": {"name": "constant.character.one_command"}},
+      "end": "(?:(?<!\\\\)(\\\\\\\\)*\")|((?<!\\\\)\\n)",
+      "endCaptures": {
+        "1": {"name": "constant.character.one_command"},
+        "2": {"name": "invalid.illegal.one_command"}
+      }, 
+      "patterns": [
+        {
+          "name": "constant.character.escape.one_command",
+          "match": "\\\\."
+        },
+        {
+          "name": "variable.parameter.one_command",
+          "match": "\\|[a-zA-Z0-9_]*\\|"
+        },
+        {
+          "name": "storage.type.one_command",
+          "match": "\\|\\$?[a-zA-Z0-9_]*\\|"
+        },
+        {
+          "name": "comment.other.one_command",
+          "match": "\\\\[ \\t]*\n"
+        }
+      ],
       "name": "string.quoted.double.one_command"
     },
     {
