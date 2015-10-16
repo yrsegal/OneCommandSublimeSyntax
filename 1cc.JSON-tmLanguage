@@ -118,7 +118,7 @@
       "captures": {"1": {"name": "keyword.control.one_command"}}
     },
     {
-      "match": "~|-?\\d*(?:\\d[bsl]?|\\.\\d+f?)",
+      "match": "~|-?\\d*(?:\\d[bsl]?|\\.\\d+[fd]?)",
       "name": "constant.numeric.one_command"
     },
     {
@@ -136,7 +136,7 @@
       "patterns": [
         {
           "name": "constant.numeric.one_command",
-          "match": "~|-?\\d*(?:\\d[bsl]?|\\.\\d+f?)"
+          "match": "~|-?\\d*(?:\\d[bsl]?|\\.\\d+[fd]?)"
         },
         {
           "name": "constant.character.escape.one_command",
